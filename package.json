@@ -1,4 +1,6 @@
 {
+  "name": "cropper-node",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -8,7 +10,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mongoose": "^8.0.3",
+    "mysql": "^2.18.1",
     "pug": "^3.0.2",
     "superagent": "^8.1.2"
   }
