@@ -5,7 +5,8 @@ function catchHandler(fn) {
             await fn(req, res, next);
         } catch (error) {
             res.status(500).json({
-                error: 'Internal server error. Please try again later.',
+                error: error,
+                msg: 'Internal server error. Please try again later.',
             });
         }
     };

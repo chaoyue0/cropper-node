@@ -9,12 +9,12 @@ const connection = mysql.createConnection({
 });
 
 // 测试连接
-connection.connect((err) => {
-    if (err) {
-        console.error('连接失败：' + err.stack);
-        return;
-    }
-    console.log('成功连接到数据库，ID为 ' + connection.threadId);
-});
+// connection.connect((err) => {
+//     if (err) {
+//         console.error('连接失败：' + err.stack);
+//         return;
+//     }
+//     console.log('成功连接到数据库，ID为 ' + connection.threadId);
+// });
 
 module.exports = connection;
