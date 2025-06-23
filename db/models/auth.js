@@ -2,9 +2,18 @@ const db = require('../config.js')
 
 const insertUser = (data) => {
     return new Promise((resolve, reject) => {
-        const query = 'INSERT INTO user (name, password, create_time) VALUES(?,?,?)';
+        const query = 'INSERT INTO users (id, name, password, create_time, coins, status) VALUES(?,?,?,?,?,?)';
 
-        db.query(query, [data.name, data.password, data.createTime], (error, results) => {
+        const params = [
+            data.id,
+            data.name,
+            data.password,
+            data.createTime,
+            data.coins || 50, // 默认值
+            data.status || 'active',
+        ];
+
+        db.query(query, params, (error, results) => {
             if (error) {
                 return reject(error);
             }
@@ -15,7 +24,7 @@ const insertUser = (data) => {
 
 const deleteUser = (id) => {
     return new Promise((resolve, reject) => {
-        const query = 'DELETE FROM user WHERE id = ?';
+        const query = 'DELETE FROM users WHERE id = ?';
 
         db.query(query, [id], (error, results) => {
             if (error) {
@@ -28,7 +37,7 @@ const deleteUser = (id) => {
 
 const updateUserName = (name, id) => {
     return new Promise((resolve, reject) => {
-        const query = 'UPDATE user set name = ? where id = ?';
+        const query = 'UPDATE users set name = ? where id = ?';
 
         db.query(query, [name, id], (error, results) => {
             if (error) {
@@ -41,7 +50,7 @@ const updateUserName = (name, id) => {
 
 const selectAllUser = () => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM user';
+        const query = 'SELECT * FROM users';
 
         db.query(query, (error, results) => {
             if (error) {
@@ -52,9 +61,28 @@ const selectAllUser = () => {
     })
 }
 
+const findByName = (name) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM users where name = ?';
+
+        db.query(query, [name], (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            if (results.length === 0) {
+                resolve(null);
+            } else {
+                resolve(results[0]);
+            }
+        })
+    })
+}
+
 module.exports = {
     insertUser,
     deleteUser,
     updateUserName,
     selectAllUser,
+    findByName
 }

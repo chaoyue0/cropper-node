@@ -1,5 +1,5 @@
 const express = require('express');
-const userRouter = require('./routes/user');
+const authRouter = require('./routes/auth');
 const photoRouter = require('./routes/photo');
 
 const app = express();
@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // 解析传统表单
-app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/photo', photoRouter);
 
 const start = async () => {

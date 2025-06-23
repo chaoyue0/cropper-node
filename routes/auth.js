@@ -1,5 +1,5 @@
 const express = require('express');
-const userController = require('../controllers/user');
+const userController = require('../controllers/auth');
 const validateRequiredFields = require('../middleware/validateRequiredFields');
 const validateQueryParams = require('../middleware/validateQueryParams');
 const catchHandler = require('../utils/catchHandler');
