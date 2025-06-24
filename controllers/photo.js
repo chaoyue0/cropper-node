@@ -51,13 +51,20 @@ const removePhoto = async (req, res) => {
 const getPhotoList = async (req, res) => {
     const { userId } = req.body;
 
-    const result = await photoModel.selectAllPhotoByUserId(userId);
-
-    res.status(200).json({
-        success: true,
-        msg: 'search successful!',
-        data: result,
-    });
+    try {
+        const result = await photoModel.selectAllPhotoByUserId(userId);
+        return res.status(200).json({
+            success: true,
+            msg: 'search successful!',
+            data: result,
+        });
+    }
+    catch (err) {
+        return res.status(400).json({
+            success: false,
+            msg: 'search failed.',
+        });
+    }
 }
 
 module.exports = {
