@@ -14,12 +14,6 @@ const multer = require('multer');
 // 文件存储：内存
 const storage = multer.memoryStorage();
 
-// 文件过滤
-const fileFilter = (req, file, cb) => {
-    console.log('file', file);
-    cb(null, true)
-}
-
 const parseFile = multer({ storage }).single('file');
 
 module.exports = parseFile;
