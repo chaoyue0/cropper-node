@@ -1,6 +1,7 @@
 const photoModel = require("../db/models/photo");
 const uploadToMinio = require("../utils/uploadToMinio")
 const {v4: uuidv4} = require("uuid");
+const removeFile = require("../utils/removeFile");
 
 // 图片上传
 const upload = async (req, res) => {
@@ -38,7 +39,7 @@ const upload = async (req, res) => {
            originalName: file.originalname,
            userId: userId,
            mimeType: file.type,
-           storagePath: uploadToMinio('cropper-bucket', file.originalname, './public/image/photo.jpg', file.type),
+           storagePath: file.path,
            uploadedAt: new Date(),
            size: file.size,
        });
@@ -47,12 +48,11 @@ const upload = async (req, res) => {
            res.status(201).json({
                success: true,
                message: '文件上传成功',
-               // data: {
-               //     photoId: result.insertId, // 假设返回插入ID
-               //     fileName: req.file.originalname,
-               //     fileSize: formatFileSize(req.file.size),
-               //     previewUrl: `/preview/${result.insertId}` // 预览URL示例
-               // }
+               data: {
+                   photoId: id,
+                   fileName: file.originalname,
+                   storagePath: file.path
+               }
            });
        } else {
            res.status(400).json({
@@ -62,9 +62,10 @@ const upload = async (req, res) => {
        }
    }
    catch (err) {
+       removeFile()
        return res.status(500).json({
            success: false,
-           error: '文件上传失败',
+           error: '数据库插入报错:' + err,
            details: process.env.NODE_ENV === 'development' ? err : undefined
        });
    }

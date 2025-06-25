@@ -2,9 +2,19 @@ const db = require('../config.js');
 
 const insertPhoto = (data) => {
     return new Promise((resolve, reject) => {
-        const query = 'INSERT INTO photo (name, user_id, data, upload_time, size) VALUES(?,?,?,?,?)';
+        const query = 'INSERT INTO photos (id, storage_path, mime_type, original_name, user_id, uploaded_at, size) VALUES(?,?,?,?,?,?,?)';
 
-        db.query(query, [data.name, data.userId, data.file, data.uploadTime, data.size], (error, results) => {
+        const params = [
+            data.id,
+            data.storagePath,
+            data.mimeType,
+            data.originalName,
+            data.userId,
+            data.uploadedAt,
+            data.size
+        ];
+
+        db.query(query, params, (error, results) => {
             if (error) {
                 return reject(error);
             }
