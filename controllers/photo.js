@@ -2,6 +2,7 @@ const photoModel = require("../db/models/photo");
 const uploadToMinio = require("../utils/uploadToMinio")
 const {v4: uuidv4} = require("uuid");
 const removeFile = require("../utils/removeFile");
+const changeBackgroundColor = require("../utils/photoSharp/changeBackgroundColor");
 
 // 图片上传
 const upload = async (req, res) => {
@@ -108,8 +109,27 @@ const getPhotoList = async (req, res) => {
     }
 }
 
+// 一键图片换底色
+const replaceImageBackground = async (req, res) => {
+    try {
+        const result = await changeBackgroundColor(req.file.path);
+        return res.status(200).json({
+            success: true,
+            msg: 'changeBackgroundColor successful!',
+            data: result,
+        });
+    }
+    catch (err) {
+        return res.status(400).json({
+            success: false,
+            msg: 'changeBackgroundColor failed.',
+        });
+    }
+}
+
 module.exports = {
     upload,
     removePhoto,
-    getPhotoList
+    getPhotoList,
+    replaceImageBackground
 }
