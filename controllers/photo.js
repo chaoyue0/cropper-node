@@ -110,9 +110,12 @@ const getPhotoList = async (req, res) => {
 }
 
 // 一键图片换底色
+// 蓝色：#438EDB 红色：#FF0000 白色：#FFFFFF
 const replaceImageBackground = async (req, res) => {
     try {
-        const result = await changeBackgroundColor(req.file.path);
+        const bgColor = req.body.bgColor;
+        const result = await changeBackgroundColor(req.file.path, bgColor);
+        removeFile()
         return res.status(200).json({
             success: true,
             msg: 'changeBackgroundColor successful!',
@@ -120,9 +123,10 @@ const replaceImageBackground = async (req, res) => {
         });
     }
     catch (err) {
+        removeFile()
         return res.status(400).json({
             success: false,
-            msg: 'changeBackgroundColor failed.',
+            msg: 'changeBackgroundColor failed：' + err,
         });
     }
 }
