@@ -10,6 +10,7 @@ const router = express.Router();
 router.get('/remove', validateQueryParams(['id']), catchHandler(photoController.removePhoto))
 
 router.post('/replaceImageBackground', multer, validateRequiredFields(['bgColor']), catchHandler(photoController.replaceImageBackground));
+router.post('/convertImageFormat', multer, catchHandler(photoController.convertFormat));
 router.post('/upload', multer, catchHandler(photoController.upload));
 router.post('/list', validateRequiredFields(['userId']), catchHandler(photoController.getPhotoList))
 

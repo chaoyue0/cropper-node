@@ -3,6 +3,7 @@ const uploadToMinio = require("../utils/uploadToMinio")
 const {v4: uuidv4} = require("uuid");
 const removeFile = require("../utils/removeFile");
 const changeBackgroundColor = require("../utils/photoSharp/changeBackgroundColor");
+const convertImageFormat = require("../utils/photoSharp/convertImageFormat");
 
 // 图片上传
 const upload = async (req, res) => {
@@ -131,9 +132,31 @@ const replaceImageBackground = async (req, res) => {
     }
 }
 
+// 图片格式转换
+const convertFormat = async (req, res) => {
+    try {
+        const format = req.body.format;
+        const result = await convertImageFormat(req.file.path, req.file.destination, format);
+        removeFile()
+        return res.status(200).json({
+            success: true,
+            msg: 'convertFormat successful!',
+            data: result,
+        });
+    }
+    catch (err) {
+        removeFile()
+        return res.status(400).json({
+            success: false,
+            msg: 'convertFormat failed：' + err,
+        });
+    }
+}
+
 module.exports = {
     upload,
     removePhoto,
     getPhotoList,
-    replaceImageBackground
+    replaceImageBackground,
+    convertFormat
 }
